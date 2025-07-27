@@ -127,16 +127,28 @@ int ha_serverless::create(const char *name, TABLE *table_arg,
 {
     DBUG_ENTER("ha_serverless::create");
     
-    // Create timeline for new table
+    // Create timeline for the new table using the connection pool
     TimelineId timeline_id(hash_string(name));
-    
-    int result = pageserver_client->create_timeline(timeline_id);
-    if (result != 0) {
+
+    // Obtain a pageserver connection from the pool
+    auto pageserver_conn = global_connection_pool->get_pageserver_connection();
+    if (!pageserver_conn) {
+        DBUG_RETURN(HA_ERR_INTERNAL_ERROR);
+    }
+
+    // Create timeline on the pageserver
+    if (pageserver_conn->create_timeline(timeline_id) != 0) {
         DBUG_RETURN(HA_ERR_GENERIC);
     }
-    
-    result = safekeeper_client->create_timeline(timeline_id);
-    if (result != 0) {
+
+    // Obtain a safekeeper connection from the pool
+    auto safekeeper_conn = global_connection_pool->get_safekeeper_connection();
+    if (!safekeeper_conn) {
+        DBUG_RETURN(HA_ERR_INTERNAL_ERROR);
+    }
+
+    // Create timeline on the safekeeper
+    if (safekeeper_conn->create_timeline(timeline_id) != 0) {
         DBUG_RETURN(HA_ERR_GENERIC);
     }
     
