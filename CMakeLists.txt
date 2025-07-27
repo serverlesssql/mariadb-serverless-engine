@@ -17,10 +17,10 @@
 # Redirects all I/O to remote pageserver and safekeeper services
 
 SET(SERVERLESS_SOURCES 
-    ha_serverless.cc
-    pageserver_client.cc
-    safekeeper_client.cc
-    connection_pool.cc
+    src/ha_serverless.cc
+    src/pageserver_client.cc
+    src/safekeeper_client.cc
+    src/connection_pool.cc
 )
 
 # Add libcurl for HTTP client communication with pageserver
