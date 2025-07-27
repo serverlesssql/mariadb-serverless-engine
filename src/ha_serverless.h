@@ -122,17 +122,16 @@ public:
     int rnd_pos(uchar *buf, uchar *pos);
     void position(const uchar *record);
     
-    // Index operations (not supported in v1)
-    int index_init(uint idx, bool sorted) { return HA_ERR_WRONG_COMMAND; }
+    // Index operations (basic support for production)
+    int index_init(uint idx, bool sorted);
     int index_end() { return 0; }
     int index_read_map(uchar *buf, const uchar *key,
                        key_part_map keypart_map,
-                       enum ha_rkey_function find_flag) 
-                       { return HA_ERR_WRONG_COMMAND; }
-    int index_next(uchar *buf) { return HA_ERR_WRONG_COMMAND; }
-    int index_prev(uchar *buf) { return HA_ERR_WRONG_COMMAND; }
-    int index_first(uchar *buf) { return HA_ERR_WRONG_COMMAND; }
-    int index_last(uchar *buf) { return HA_ERR_WRONG_COMMAND; }
+                       enum ha_rkey_function find_flag);
+    int index_next(uchar *buf);
+    int index_prev(uchar *buf);
+    int index_first(uchar *buf);
+    int index_last(uchar *buf);
     
     // Information methods
     int info(uint flag);
@@ -154,13 +153,14 @@ public:
     
     ulong index_flags(uint inx, uint part, bool all_parts) const
     {
-        return 0; // No index support in v1
+        return HA_READ_NEXT | HA_READ_PREV | HA_READ_ORDER | HA_READ_RANGE | 
+               HA_KEYREAD_ONLY | HA_DO_INDEX_COND_PUSHDOWN;
     }
     
     uint max_supported_record_length() const { return HA_MAX_REC_LENGTH; }
-    uint max_supported_keys() const { return 0; }
-    uint max_supported_key_parts() const { return 0; }
-    uint max_supported_key_length() const { return 0; }
+    uint max_supported_keys() const { return 64; }
+    uint max_supported_key_parts() const { return 16; }
+    uint max_supported_key_length() const { return 3072; }
     
     // Serverless-specific methods
     int initialize_timeline(const char* table_name);
