@@ -50,7 +50,7 @@ git clone https://github.com/MariaDB/server.git mariadb-server
 cd mariadb-server
 
 # Add serverless engine as submodule
-git submodule add https://github.com/your-org/mariadb-serverless-engine.git storage/serverless
+git submodule add https://github.com/myserverlesssql/mariadb-serverless-engine.git storage/serverless
 git submodule update --init --recursive
 
 # Build MariaDB with serverless engine
@@ -63,7 +63,7 @@ make -j$(nproc)
 
 ```bash
 # Clone this repository
-git clone https://github.com/your-org/mariadb-serverless-engine.git
+git clone https://github.com/myserverlesssql/mariadb-serverless-engine.git
 cd mariadb-serverless-engine
 
 # Build the storage engine
@@ -194,7 +194,7 @@ This project is licensed under the GNU General Public License v2.0 - see the [LI
 
 ## Support
 
-- **Issues**: Report bugs via [GitHub Issues](https://github.com/your-org/mariadb-serverless-engine/issues)
+- **Issues**: Report bugs via [GitHub Issues](https://github.com/myserverlesssql/mariadb-serverless-engine/issues)
 - **Documentation**: See [docs/](docs/) directory
 - **Examples**: See [examples/](examples/) directory
 
